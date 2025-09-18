@@ -2,18 +2,30 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ativação do Produto</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
       max-width: 600px;
-      margin: 100px auto;
+      width: 100%;
       padding: 20px;
       text-align: center;
-      background-color: #f9f9f9;
+      background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     input, button {
       padding: 10px;
       font-size: 18px;
@@ -22,14 +34,29 @@
       border-radius: 5px;
       border: 1px solid #888;
     }
+
     button {
       cursor: pointer;
       background-color: #0066cc;
       color: white;
       border: none;
     }
+
     button:hover {
       background-color: #004999;
     }
+
     #senha {
       margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ativação do Produto</h1>
+    <input type="text" placeholder="Digite o código do produto" />
+    <input id="senha" type="password" placeholder="Digite a senha" />
+    <button type="button">Ativar Produto</button>
+  </div>
+</body>
+</html>
