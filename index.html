@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ativação do Produto</title>
+  <title>Gerar Contra Senha</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,79 +12,90 @@
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      background-color: #f9f9f9;
+      background-color: #f0f2f5;
     }
 
     .container {
-      max-width: 600px;
-      width: 100%;
-      padding: 20px;
-      text-align: center;
       background-color: #fff;
-      border: 1px solid #ccc;
+      padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
     }
 
-    input, button {
-      padding: 10px;
-      font-size: 18px;
-      width: 80%;
-      margin-top: 15px;
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      border: 1px solid #888;
+      box-sizing: border-box;
     }
 
     button {
-      cursor: pointer;
-      background-color: #0066cc;
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #007bff;
       color: white;
       border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     button:hover {
-      background-color: #004999;
+      background-color: #0056b3;
     }
 
-    #senha {
-      margin-top: 30px;
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .success {
+    #resultado {
+      margin-top: 15px;
+      font-size: 16px;
       color: green;
-      font-size: 14px;
-      margin-top: 10px;
+      word-break: break-all;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Ativação do Produto</h1>
-    <input id="codigo" type="text" placeholder="Digite o código do produto" />
-    <input id="senha" type="password" placeholder="Digite a senha" />
-    <button id="ativarBtn" type="button">Ativar Produto</button>
-    <p id="mensagem" class="error"></p>
+    <h1>Gerador de Contra Senha</h1>
+    <input type="text" id="codigo" placeholder="Digite o código do produto">
+    <button onclick="gerarContraSenha()">Gerar Contra Senha</button>
+    <div id="resultado"></div>
   </div>
 
   <script>
-    // Função para validar e ativar o produto
-    document.getElementById("ativarBtn").addEventListener("click", function() {
-      var codigo = document.getElementById("codigo").value;
-      var senha = document.getElementById("senha").value;
-      var mensagem = document.getElementById("mensagem");
+    function gerarContraSenha() {
+      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
+      const resultado = document.getElementById("resultado");
 
-      // Validar os campos
-      if (codigo === "" || senha === "") {
-        mensagem.textContent = "Por favor, preencha todos os campos.";
-        mensagem.className = "error"; // Classe de erro
+      if (!codigo) {
+        resultado.textContent = "Digite um código válido.";
+        resultado.style.color = "red";
         return;
       }
 
-      // Simulação de ativação do produto
-      if (codigo === "12345" && senha
+      // === Exemplo de algoritmo para gerar a contra senha ===
+      // Aqui usamos uma função hash simples somando os valores dos caracteres
+      let contraSenha = "";
+
+      for (let i = 0; i < codigo.length; i++) {
+        let charCode = codigo.charCodeAt(i);
+        contraSenha += ((charCode * (i + 1)) % 16).toString(16).toUpperCase();
+      }
+
+      resultado.style.color = "green";
+      resultado.innerHTML = `<strong>Contra Senha:</strong><br>${contraSenha}`;
+    }
+  </script>
+</body>
+</html>
