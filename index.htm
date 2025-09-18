@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Ativação do Produto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 20px;
+      text-align: center;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 18px;
+      width: 80%;
+      margin-top: 15px;
+      border-radius: 5px;
+      border: 1px solid #888;
+    }
+    button {
+      cursor: pointer;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #004999;
+    }
+    #senha {
+      margin-top: 30px;
+      font-size: 22px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ativação do Software</h1>
+  <p>Digite o <strong>código exibido no instalador</strong> para gerar sua senha de ativação:</p>
+
+  <input type="text" id="codigo" placeholder="Exemplo: 123456789012345" />
+  <br>
+  <button onclick="gerarSenha()">Gerar Senha</button>
+
+  <div id="senha"></div>
+
+  <script>
+    async function gerarSenha() {
+      const codigo = document.getElementById("codigo").value.trim();
+
+      if (!codigo) {
+        alert("Por favor, insira o código de ativação.");
+        return;
+      }
+
+      // Função para gerar hash SHA-256 e extrair os primeiros 8 caracteres
+      async function sha256(text) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+      }
+
+      const hash = await sha256(codigo);
+      const senha = hash.substring(0, 8).toUpperCase();
+
+      document.getElementById("senha").innerHTML = `
+        <p><strong>Sua senha de ativação:</strong></p>
+        <p style="font-size:28px; font-weight:bold;">${senha}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
