@@ -7,28 +7,27 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       margin: 0;
-      background-color: #f0f2f5;
     }
 
     .container {
       background-color: #fff;
       padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       text-align: center;
-      width: 90%;
       max-width: 400px;
+      width: 90%;
     }
 
     h1 {
       font-size: 22px;
       margin-bottom: 20px;
-      color: #333;
     }
 
     input {
@@ -38,8 +37,8 @@
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      box-sizing: border-box;
       text-transform: uppercase;
+      box-sizing: border-box;
     }
 
     button {
@@ -51,7 +50,6 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
     }
 
     button:hover {
@@ -62,39 +60,50 @@
       margin-top: 15px;
       font-size: 16px;
       color: green;
-      word-break: break-all;
+      word-break: break-word;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Gerador de Contra Senha</h1>
-    <input type="text" id="codigo" placeholder="Digite o código do produto">
+    <h1>Gerar Contra Senha</h1>
+    <input type="text" id="codigo" placeholder="Digite o código de ativação">
     <button onclick="gerarContraSenha()">Gerar Contra Senha</button>
     <div id="resultado"></div>
   </div>
 
   <script>
-    function gerarContraSenha() {
+    async function gerarContraSenha() {
       const codigo = document.getElementById("codigo").value.trim().toUpperCase();
       const resultado = document.getElementById("resultado");
 
       if (!codigo) {
-        resultado.textContent = "Digite um código válido.";
         resultado.style.color = "red";
+        resultado.textContent = "Por favor, digite o código de ativação.";
         return;
       }
 
-      // --- Algoritmo simulado para gerar a contra senha ---
-      let contraSenha = "";
+      try {
+        // Converte o código para um ArrayBuffer
+        const encoder = new TextEncoder();
+        const data = encoder.encode(codigo);
 
-      for (let i = 0; i < codigo.length; i++) {
-        let charCode = codigo.charCodeAt(i);
-        contraSenha += ((charCode * (i + 3)) % 16).toString(16).toUpperCase();
+        // Calcula o SHA-256
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+        // Converte o hash para string hexadecimal
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        // Pega os 8 primeiros caracteres e converte para maiúsculas
+        const contraSenha = hashHex.substring(0, 8).toUpperCase();
+
+        resultado.style.color = "green";
+        resultado.innerHTML = `<strong>Contra Senha:</strong><br>${contraSenha}`;
+      } catch (e) {
+        resultado.style.color = "red";
+        resultado.textContent = "Erro ao gerar a contra senha.";
       }
-
-      resultado.style.color = "green";
-      resultado.innerHTML = `<strong>Contra Senha:</strong><br>${contraSenha}`;
     }
   </script>
 </body>
