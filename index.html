@@ -51,32 +51,12 @@
 
   <script>
     async function gerarSenha() {
-      const codigo = document.getElementById("codigo").value.trim();
+      // Aqui convertemos o código para maiúsculas e removemos espaços extras
+      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
 
       if (!codigo) {
         alert("Por favor, insira o código de ativação.");
         return;
       }
 
-      // Função para gerar hash SHA-256 e extrair os primeiros 8 caracteres
-      async function sha256(text) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(text);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hashHex;
-      }
-
-      const hash = await sha256(codigo);
-      const senha = hash.substring(0, 8).toUpperCase();
-
-      document.getElementById("senha").innerHTML = `
-        <p><strong>Sua senha de ativação:</strong></p>
-        <p style="font-size:28px; font-weight:bold;">${senha}</p>
-      `;
-    }
-  </script>
-
-</body>
-</html>
+      // Função para gerar hash SHA-256 e extr
