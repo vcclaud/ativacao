@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerar Contra Senha</title>
+  <title>Gerador de Contra Senha</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -39,6 +39,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
+      text-transform: uppercase;
     }
 
     button {
@@ -84,13 +85,12 @@
         return;
       }
 
-      // === Exemplo de algoritmo para gerar a contra senha ===
-      // Aqui usamos uma função hash simples somando os valores dos caracteres
+      // --- Algoritmo simulado para gerar a contra senha ---
       let contraSenha = "";
 
       for (let i = 0; i < codigo.length; i++) {
         let charCode = codigo.charCodeAt(i);
-        contraSenha += ((charCode * (i + 1)) % 16).toString(16).toUpperCase();
+        contraSenha += ((charCode * (i + 3)) % 16).toString(16).toUpperCase();
       }
 
       resultado.style.color = "green";
