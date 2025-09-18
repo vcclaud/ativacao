@@ -51,7 +51,7 @@
 
   <script>
     async function gerarSenha() {
-      // Aqui convertemos o código para maiúsculas e removemos espaços extras
+      // Obtenha o valor do código de ativação inserido
       const codigo = document.getElementById("codigo").value.trim().toUpperCase();
 
       if (!codigo) {
@@ -59,4 +59,25 @@
         return;
       }
 
-      // Função para gerar hash SHA-256 e extr
+      // Usando Web Crypto API para gerar um hash SHA-256
+      const encoder = new TextEncoder();
+      const data = encoder.encode(codigo);
+
+      try {
+        // Gera o hash SHA-256
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        
+        // Converte o hash para uma string hexadecimal
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+        // Exibe a senha gerada
+        document.getElementById("senha").textContent = `Senha de Ativação: ${hashHex}`;
+      } catch (error) {
+        console.error('Erro ao gerar o hash:', error);
+      }
+    }
+  </script>
+
+</body>
+</html>
