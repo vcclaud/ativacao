@@ -49,14 +49,42 @@
     #senha {
       margin-top: 30px;
     }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .success {
+      color: green;
+      font-size: 14px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Ativação do Produto</h1>
-    <input type="text" placeholder="Digite o código do produto" />
+    <input id="codigo" type="text" placeholder="Digite o código do produto" />
     <input id="senha" type="password" placeholder="Digite a senha" />
-    <button type="button">Ativar Produto</button>
+    <button id="ativarBtn" type="button">Ativar Produto</button>
+    <p id="mensagem" class="error"></p>
   </div>
-</body>
-</html>
+
+  <script>
+    // Função para validar e ativar o produto
+    document.getElementById("ativarBtn").addEventListener("click", function() {
+      var codigo = document.getElementById("codigo").value;
+      var senha = document.getElementById("senha").value;
+      var mensagem = document.getElementById("mensagem");
+
+      // Validar os campos
+      if (codigo === "" || senha === "") {
+        mensagem.textContent = "Por favor, preencha todos os campos.";
+        mensagem.className = "error"; // Classe de erro
+        return;
+      }
+
+      // Simulação de ativação do produto
+      if (codigo === "12345" && senha
