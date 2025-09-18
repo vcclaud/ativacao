@@ -1,110 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de Contra Senha</title>
+  <title>Gerador de Senha de Ativação</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background: #f5f5f5;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      padding: 40px;
     }
-
-    .container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-    }
-
     h1 {
-      font-size: 22px;
-      margin-bottom: 20px;
+      color: #333;
     }
-
-    input {
-      width: 100%;
-      padding: 12px;
+    input, button {
+      font-size: 1.1em;
+      padding: 10px;
       margin: 10px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      text-transform: uppercase;
-      box-sizing: border-box;
+      width: 300px;
+      text-align: center;
     }
-
     button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background-color: #007bff;
+      background: #007acc;
       color: white;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #resultado {
-      margin-top: 15px;
-      font-size: 16px;
+    #senha {
+      font-weight: bold;
       color: green;
-      word-break: break-word;
+      font-size: 1.4em;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Gerar Contra Senha</h1>
-    <input type="text" id="codigo" placeholder="Digite o código de ativação">
-    <button onclick="gerarContraSenha()">Gerar Contra Senha</button>
-    <div id="resultado"></div>
-  </div>
+
+  <h1>Gerador de Senha</h1>
+  <p>Insira o código de ativação para gerar a senha correspondente.</p>
+
+  <input type="text" id="codigo" placeholder="Digite o código de ativação">
+  <button onclick="gerarSenha()">Gerar Senha</button>
+
+  <div id="senha"></div>
 
   <script>
-    async function gerarContraSenha() {
-      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
-      const resultado = document.getElementById("resultado");
-
+    async function gerarSenha() {
+      const codigo = document.getElementById('codigo').value.trim().toUpperCase();
       if (!codigo) {
-        resultado.style.color = "red";
-        resultado.textContent = "Por favor, digite o código de ativação.";
+        alert('Por favor, digite um código de ativação.');
         return;
       }
-
-      try {
-        // Converte o código para um ArrayBuffer
-        const encoder = new TextEncoder();
-        const data = encoder.encode(codigo);
-
-        // Calcula o SHA-256
-        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-
-        // Converte o hash para string hexadecimal
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-        // Pega os 8 primeiros caracteres e converte para maiúsculas
-        const contraSenha = hashHex.substring(0, 8).toUpperCase();
-
-        resultado.style.color = "green";
-        resultado.innerHTML = `<strong>Contra Senha:</strong><br>${contraSenha}`;
-      } catch (e) {
-        resultado.style.color = "red";
-        resultado.textContent = "Erro ao gerar a contra senha.";
-      }
+      const encoder = new TextEncoder();
+      const data = encoder.encode(codigo);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      const senha = hashHex.slice(0, 8).toUpperCase();
+      document.getElementById('senha').textContent = "Senha: " + senha;
     }
   </script>
+
 </body>
 </html>
